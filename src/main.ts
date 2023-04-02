@@ -1,3 +1,5 @@
+export {};
+
 interface User {
   id: number;
   name: string;
@@ -42,15 +44,23 @@ async function filterUsers(): Promise<void> {
   const searchValue = searchInput.value.toLowerCase();
   const users = await getUsers();
   const filteredUsers = users.filter((user) => user.name.toLowerCase().includes(searchValue));
+  
+  // Remove all users
+  const userList = document.querySelector("ul");
+  if (userList) {
+    userList.remove();
+  }
+
+  // Render filtered users
   renderUsers(filteredUsers);
 }
 
 const searchInput = document.createElement("input");
 searchInput.type = "text";
 searchInput.id = "search-input";
-searchInput.placeholder = "Search by name";
+searchInput.placeholder = "Zadej jméno";
 searchInput.addEventListener("input", filterUsers);
-document.body.appendChild(searchInput);
+document.body.insertBefore(searchInput, document.body.firstChild);
 
 getUsers()
   .then((users) => renderUsers(users))
